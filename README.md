@@ -1,57 +1,122 @@
 # 商品管理アプリ
 
-## 概要
+Laravelで作成した商品管理アプリです。
 
-商品の登録・編集・削除・検索を行うためのアプリです。
+## 機能
+
+* 商品一覧表示
+* 商品検索（部分一致）
+* 商品登録
+* 商品詳細表示
+* 商品編集
+* 商品削除
+* ページネーション
+* カテゴリ管理
 
 ## 使用技術
 
-- PHP 8.4
-- Laravel 13
-- MySQL 8
-- Docker
-- Laravel Sail
-- Bootstrap
+* PHP 8.4
+* Laravel 13
+* MySQL 8.4
+* Docker
+* Bootstrap
 
-## 機能一覧
+## 環境構築
 
-- 商品一覧
-- 商品検索
-- 商品登録
-- 商品編集
-- 商品削除
-- カテゴリ管理
+### 前提条件
 
-## ER図
+以下がインストールされていること
 
-（ER図画像）
+* Git
+* Docker Desktop
 
-## 画面イメージ
+### 1. リポジトリをクローン
 
-（スクリーンショット）
-
-## セットアップ
-
-### リポジトリを取得
-
-git clone ○○
-
-### ディレクトリ移動
-
+```bash
+git clone https://github.com/kouhei-souda/product-management-app.git
 cd product-management-app
+```
 
-### コンテナ起動
+### 2. Dockerコンテナ起動
 
-docker compose up -d
+```bash
+docker compose up -d --build
+```
 
-### Composerインストール
+### 3. appコンテナへ接続
 
-./vendor/bin/sail composer install
+```bash
+docker compose exec app bash
+```
 
-### APP_KEY生成
+### 4. Composerパッケージをインストール
 
-./vendor/bin/sail artisan key:generate
+```bash
+composer install
+```
 
-### マイグレーション
+### 5. 環境変数ファイルを作成
 
-./vendor/bin/sail artisan migrate --seed
+```bash
+cp .env.example .env
+```
+
+### 6. アプリケーションキーを生成
+
+```bash
+php artisan key:generate
+```
+
+### 7. データベースを作成
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### 8. アプリへアクセス
+
+ブラウザで以下へアクセスしてください。
+
+```text
+http://localhost:8000
+```
+
+## データベース設定
+
+本プロジェクトでは Docker Compose の MySQL コンテナを使用しています。
+
+`.env`
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=laravel
+DB_PASSWORD=password
+```
+
+## ディレクトリ構成
+
+```text
+.
+├── app
+├── database
+├── docker
+│   └── php
+│       └── Dockerfile
+├── resources
+├── routes
+├── compose.yaml
+└── README.md
+```
+
+## 今後の改善予定
+
+* バリデーション強化
+* ログイン機能
+* 権限管理機能
+* ECサイト風UIへの改修
+* カート機能
+* 注文機能
+* 決済機能
