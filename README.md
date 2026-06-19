@@ -37,7 +37,7 @@ git clone https://github.com/kouhei-souda/product-management-app.git
 cd product-management-app
 ```
 
-### 2. Dockerコンテナ起動
+### 2. Dockerコンテナを起動
 
 ```bash
 docker compose up -d --build
@@ -73,7 +73,13 @@ php artisan key:generate
 php artisan migrate:fresh --seed
 ```
 
-### 8. アプリへアクセス
+### 8. Laravel開発サーバーを起動
+
+```bash
+php artisan serve --host=0.0.0.0 --port=8000
+```
+
+### 9. アプリへアクセス
 
 ブラウザで以下へアクセスしてください。
 
@@ -85,7 +91,7 @@ http://localhost:8000
 
 本プロジェクトでは Docker Compose の MySQL コンテナを使用しています。
 
-`.env`
+`.env.example` には以下の設定が含まれています。
 
 ```env
 DB_CONNECTION=mysql
@@ -94,6 +100,12 @@ DB_PORT=3306
 DB_DATABASE=laravel
 DB_USERNAME=laravel
 DB_PASSWORD=password
+```
+
+## コンテナ停止
+
+```bash
+docker compose down
 ```
 
 ## ディレクトリ構成
