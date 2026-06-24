@@ -14,11 +14,15 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         DB::table('categories')->insert([
-            ['name' => '食品'],
-            ['name' => '家電'],
-            ['name' => '書籍'],
-            ['name' => '日用品'],
-            ['name' => 'スポーツ'],
+            ['name' => 'トップス'],
+            ['name' => 'ボトムス'],
+            ['name' => 'アウター'],
+            ['name' => 'シューズ'],
+            ['name' => 'バッグ'],
+            ['name' => 'アクセサリー'],
+            ['name' => '時計'],
+            ['name' => '帽子'],
+            ['name' => 'インナー'],
         ]);
     }
 }
