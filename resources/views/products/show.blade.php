@@ -1,4 +1,14 @@
 <x-layout title="商品詳細">
+    @if ($product->image_path)
+    <div class="mb-4 text-center">
+        <img
+        src="{{ asset('storage/' .$product->image_path) }}"
+        alt="{{ $product->name }}"
+        class="img-fluid"
+        style="max-width: 300px"
+        >
+    </div>
+    @endif
     <dl class="row">
         <dt class="col-sm-2">
             商品名
@@ -10,7 +20,7 @@
             金額
         </dt>
         <dd class="col-sm-10">
-            {{ $product->price }}
+            ¥{{ number_format(($product->price)) }}
         </dd>
         <dt class="col-sm-2">
             在庫
@@ -23,6 +33,12 @@
         </dt>
         <dd class="col-sm-10">
             {{ $product->category->name }}
+        </dd>
+        <dt class="col-sm-2">
+            商品説明
+        </dt>
+        <dd class="col-sm-10">
+            {{ $product->description }}
         </dd>
     </dl>
     <form method="POST" action="{{ route('products.destroy', $product) }}">

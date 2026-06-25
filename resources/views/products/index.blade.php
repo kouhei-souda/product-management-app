@@ -11,12 +11,15 @@
     <table class="table">
         <thead>
             <tr>
-                <th>商品名</th><th>金額</th><th>在庫</th><th>カテゴリー名</th><th></th>
+                <th>画像</th><th>商品名</th><th>金額</th><th>在庫</th><th>カテゴリー名</th><th></th>
             </tr>
         </thead>
         <tbody>
             @forelse ($products as $product)
             <tr>
+                <td>
+                    <img src="{{ asset('storage/' .$product->image_path) }}" width="80">
+                </td>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->price }}円</td>
                 <td>{{ $product->stock }}個</td>

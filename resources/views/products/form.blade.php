@@ -31,3 +31,7 @@
         @endforeach
     </select>
 </div>
+<div class="form-group mt-2">
+    <label for="description" class="control-label">説明：</label>
+    <textarea name="description" id="description" class="form-control" rows="3">{{ old('description', $product->description) }}</textarea>
+</div>

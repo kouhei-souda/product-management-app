@@ -18,6 +18,9 @@ return new class extends Migration
             $table->integer('stock');
             $table->foreignId('category_id')->constrained();
             $table->timestamps();
+
+            $table->text('description')->nullable();
+            $table->string('image_path')->nullable();
         });
     }
 
