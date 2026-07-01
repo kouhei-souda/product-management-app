@@ -33,9 +33,35 @@ class ProductController extends Controller
             );
         }
 
+        //ソート処理
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+            //新着順
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+
+            //価格が安い順
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+
+            //価格が高い順
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+
+            //商品名順
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            }
+        }
+
         //ページネーション＆ページ移動後検索維持
         $products = $query->paginate(12)->withQueryString();
-        
+
+        //プルダウン表示のため全件取得
         $categories = Category::all();
 
         return view('products.index', [

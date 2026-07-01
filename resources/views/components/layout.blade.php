@@ -13,7 +13,11 @@
 </head>
 <body>
     <div class="container mt-4">
-        <h1>{{ $heading ?? $title }}</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">{{ $heading ?? $title }}</h1>
+
+            {{ $header ?? '' }}
+        </div>
     {{ $slot }}
     </div>
 </body>
