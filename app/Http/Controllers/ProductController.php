@@ -16,7 +16,8 @@ class ProductController extends Controller
     {
         $query = Product::with('category');
 
-        if ($request->filled('search')){
+        //商品名検索
+        if ($request->filled('search')) {
             $query->where(
                 'name',
                 'like',
@@ -24,9 +25,23 @@ class ProductController extends Controller
             );
         }
 
-        $products = $query->paginate(12);
+        //カテゴリ絞り込み
+        if ($request->filled('category_id')) {
+            $query->where(
+                'category_id',
+                $request->category_id
+            );
+        }
 
-        return view('products.index', ['products' => $products]);
+        //ページネーション＆ページ移動後検索維持
+        $products = $query->paginate(12)->withQueryString();
+        
+        $categories = Category::all();
+
+        return view('products.index', [
+            'products' => $products,
+            'categories' => $categories,
+            ]);
     }
 
     /**

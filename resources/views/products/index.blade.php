@@ -2,12 +2,28 @@
     <a href="{{ route('products.create') }}" class="btn btn-primary mt-3">商品登録</a>
     <form method="GET" action="">
         <div class="d-flex align-items-center mt-3">
-            <label class="me-2">商品名検索</label>
-            <input type="text" name="search" class="form-control me-3" value="{{ request('search') }}" style="width: 250px;">
+            <label class="me-2">商品名</label>
+            <input type="text" name="search" class="form-control me-2" value="{{ request('search') }}" style="width: 250px;">
+
+            {{-- カテゴリー別 --}}
+            <select name="category_id" id="category_id" class="me-2">
+                <option value="">すべて</option>
+                @foreach ($categories as $category)
+                <option
+                    value="{{ $category->id }}"
+                    @selected(request('category_id') == $category->id)
+                >
+                    {{ $category->name }}
+                </option>
+                @endforeach
+            </select>
+
             <button type="submit" class="btn btn-secondary me-2">検索</button>
             <a href="{{ route('products.index') }}" class="btn btn-secondary">クリア</a>
         </div>
     </form>
+
+    {{-- カード化レイアウト --}}
     <div class="row mt-4">
         @forelse ($products as $product)
         <div class="col-6 col-md-3 mb-4">
