@@ -265,11 +265,137 @@ class ProductTest extends TestCase
 
         Storage::disk('public')->assertExists($product->image_path);
     }
+
+    //カテゴリ絞り込み
+    public function test_products_can_be_filtered_by_category()
+    {
+        $category1 = Category::factory()->create();
+        $category2 = Category::factory()->create();
+
+        $productA = Product::create([
+            'name' => '商品A',
+            'price' => 3500,
+            'stock' => 50,
+            'category_id' => $category1->id,
+        ]);
+
+        $productB = Product::create([
+            'name' => '商品B',
+            'price' => 2500,
+            'stock' => 30,
+            'category_id' => $category2->id,
+        ]);
+
+        $response = $this->get('/products?category_id=' . $category1->id);
+
+        $response->assertSee('商品A');
+        $response->assertDontSee('商品B');
+    }
+
+    //価格昇順
+    public function test_products_can_be_sorted_by_price_ascending()
+    {
+        $category = Category::factory()->create();
+
+        $productA = Product::create([
+            'name' => 'Tシャツ',
+            'price' => 3500,
+            'stock' => 50,
+            'category_id' => $category->id,
+        ]);
+
+        $productB = Product::create([
+            'name' => 'ロゴTシャツ',
+            'price' => 2500,
+            'stock' => 30,
+            'category_id' => $category->id,
+        ]);
+
+        $productC = Product::create([
+            'name' => 'パーカー',
+            'price' => 6000,
+            'stock' => 20,
+            'category_id' => $category->id,
+        ]);
+
+        $response = $this->get('/products?sort=price_asc');
+
+        $response->assertSeeInOrder([
+            $productB->name,
+            $productA->name,
+            $productC->name,
+        ]);
+    }
+
+    //価格降順
+    public function test_products_can_be_sorted_by_price_descending()
+    {
+        $category = Category::factory()->create();
+
+        $productA = Product::create([
+            'name' => 'Tシャツ',
+            'price' => 3500,
+            'stock' => 50,
+            'category_id' => $category->id,
+        ]);
+
+        $productB = Product::create([
+            'name' => 'ロゴTシャツ',
+            'price' => 2500,
+            'stock' => 30,
+            'category_id' => $category->id,
+        ]);
+
+        $productC = Product::create([
+            'name' => 'パーカー',
+            'price' => 6000,
+            'stock' => 20,
+            'category_id' => $category->id,
+        ]);
+
+        $response = $this->get('/products?sort=price_desc');
+
+        $response->assertSeeInOrder([
+            $productC->name,
+            $productA->name,
+            $productB->name,
+        ]);
+    }
+
+    //カテゴリ絞り込み＆価格昇順
+    public function test_products_can_be_filtered_by_category_and_sorted_by_price()
+    {
+        $category1 = Category::factory()->create();
+        $category2 = Category::factory()->create();
+
+        $productA = Product::create([
+            'name' => 'Tシャツ',
+            'price' => 3500,
+            'stock' => 50,
+            'category_id' => $category1->id,
+        ]);
+
+        $productB = Product::create([
+            'name' => 'ロゴTシャツ',
+            'price' => 2500,
+            'stock' => 30,
+            'category_id' => $category1->id,
+        ]);
+
+        $productC = Product::create([
+            'name' => 'デニム',
+            'price' => 6000,
+            'stock' => 20,
+            'category_id' => $category2->id,
+        ]);
+
+        $response = $this->get('/products?category_id=' . $category1->id .'&sort=price_asc');
+
+        $response->assertSeeInOrder([
+            $productB->name,
+            $productA->name,
+        ]);
+
+        $response->assertDontSee($productC->name);
+    }
 }
-
-// test('example', function () {
-//     $response = $this->get('/');
-
-//     $response->assertStatus(200);
-// });
-
