@@ -8,7 +8,50 @@
             <a href="{{ route('products.index') }}" class="btn btn-secondary">クリア</a>
         </div>
     </form>
-    <table class="table">
+    <div class="row mt-4">
+        @forelse ($products as $product)
+        <div class="col-6 col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img
+                src="{{ asset('storage/' . $product->image_path) }}"
+                class="card-img-top p-3"
+                style="height:250px; object-fit:contain;"
+                alt="{{ $product->name }}">
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ $product->name }}</h5>
+
+                    <p class="card-text mb-1">
+                        <strong>価格：</strong>
+                        {{ number_format($product->price) }}円
+                    </p>
+
+                    <p class="card-text mb-1">
+                        <strong>在庫：</strong>
+                        {{ $product->stock }}個
+                    </p>
+
+                    <p class="card-text mb-3">
+                        <strong>カテゴリー：</strong>
+                        {{ $product->category->name }}
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="{{ route('products.show', $product) }}" class="btn btn-outline-primary btn-sm">詳細</a>
+                        <a href="{{ route('products.edit', $product) }}" class="btn btn-outline-warning btn-sm">編集</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @empty
+        <div class="col-12">
+            <div class="alert alert-danger">
+                該当する商品が見つかりませんでした
+            </div>
+        </div>
+        @endforelse
+    </div>
+    {{-- <table class="table">
         <thead>
             <tr>
                 <th>画像</th><th>商品名</th><th>金額</th><th>在庫</th><th>カテゴリー名</th><th></th>
@@ -37,6 +80,6 @@
             </tr>
             @endforelse
         </tbody>
-    </table>
+    </table> --}}
     {{ $products->links() }}
 </x-layout>

@@ -1,6 +1,6 @@
 <x-layout title="商品編集">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
         <form method="POST" action="{{ route('products.update', $product) }}" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
@@ -16,7 +16,7 @@
             @endif
             <div class="form-group mt-2">
                 <label for="image" class="control-label">新しい画像：</label>
-                <input type="file" id="image" name="image" class="from-control" accept="image/*">
+                <input type="file" id="image" name="image" class="form-control" accept="image/*">
             </div>
             <div class="form-group mt-2">
                 <button type="submit" class="btn btn-primary">更新</button>

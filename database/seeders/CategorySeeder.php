@@ -20,9 +20,9 @@ class CategorySeeder extends Seeder
             ['name' => 'シューズ'],
             ['name' => 'バッグ'],
             ['name' => 'アクセサリー'],
-            ['name' => '時計'],
             ['name' => '帽子'],
-            ['name' => 'インナー'],
+            // ['name' => '時計'],
+            // ['name' => 'インナー'],
         ]);
     }
 }

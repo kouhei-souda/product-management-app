@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -23,7 +24,7 @@ class ProductController extends Controller
             );
         }
 
-        $products = $query->paginate(10);
+        $products = $query->paginate(12);
 
         return view('products.index', ['products' => $products]);
     }
@@ -101,6 +102,12 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            //古い画像が存在する場合は削除
+            if ($product->image_path) {
+                Storage::disk('public')->delete($product->image_path);
+            }
+
+            //新しい画像を保存
             $path = $request->file('image')->store('products', 'public');
             $validated['image_path'] = $path;
         }
@@ -115,6 +122,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        //商品が存在する場合
+        if ($product->image_path) {
+            Storage::disk('public')->delete($product->image_path);
+        }
+
         $product->delete();
         return to_route('products.index');
     }
