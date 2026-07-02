@@ -15,6 +15,12 @@ class Product extends Model
         'image_path',
     ];
 
+    protected $casts = [
+        'price' => 'integer',
+        'stock' => 'integer',
+        'category_id' => 'integer',
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
