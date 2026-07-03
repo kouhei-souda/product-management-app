@@ -22,16 +22,40 @@ class ProductTest extends TestCase
         $response->assertStatus(200);
     }
 
+    //詳細
+    public function test_product_can_be_displayed()
+    {
+        $category = Category::factory()->create();
+
+        $product = Product::create([
+            'name' => 'テスト商品',
+            'price' => 3000,
+            'stock' => 30,
+            'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
+        ]);
+
+        $response = $this->get("/products/{$product->id}");
+
+        $response->assertStatus(200);
+        $response->assertSee('テスト商品');
+    }
+
     //登録
     public function test_product_can_be_created()
     {
         $category = Category::factory()->create();
+
+        $image = UploadedFile::fake()->image('test.jpg');
 
         $data = [
             'name' => 'テスト商品',
             'price' => 3000,
             'stock' => 10,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image' => $image,
         ];
 
         $response = $this->post('/products', $data);
@@ -44,6 +68,7 @@ class ProductTest extends TestCase
             'price' => 3000,
             'stock' => 10,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
         ]);
     }
 
@@ -57,6 +82,8 @@ class ProductTest extends TestCase
             'price' => 2000,
             'stock' => 20,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $updateData = [
@@ -77,6 +104,7 @@ class ProductTest extends TestCase
             'price' => 2200,
             'stock' => 22,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
         ]);
     }
 
@@ -90,6 +118,8 @@ class ProductTest extends TestCase
             'price' => 3000,
             'stock' => 10,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $response = $this->delete("/products/{$product->id}");
@@ -108,11 +138,15 @@ class ProductTest extends TestCase
     {
         $category = Category::factory()->create();
 
+        $image = UploadedFile::fake()->image('test.jpg');
+
         $data = [
             'name' => '',
             'price' => 3000,
             'stock' => 10,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image' => $image,
         ];
 
         $response = $this->post('/products', $data);
@@ -128,11 +162,15 @@ class ProductTest extends TestCase
     {
         $category = Category::factory()->create();
 
+         $image = UploadedFile::fake()->image('test.jpg');
+
         $data = [
             'name' => 'テスト商品',
             'price' => '',
             'stock' => 10,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image' => $image,
         ];
 
         $response = $this->post('/products', $data);
@@ -148,11 +186,15 @@ class ProductTest extends TestCase
     {
         $category = Category::factory()->create();
 
+        $image = UploadedFile::fake()->image('test.jpg');
+
         $data = [
             'name' => 'テスト商品',
             'price' => 3000,
             'stock' => '',
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image' => $image,
         ];
 
         $response = $this->post('/products', $data);
@@ -166,11 +208,15 @@ class ProductTest extends TestCase
     //category_id_required
     public function test_category_id_is_required()
     {
+        $image = UploadedFile::fake()->image('test.jpg');
+
         $data = [
             'name' => 'テスト商品',
             'price' => 3000,
             'stock' => '10',
             'category_id' => '',
+            'description' => 'これはテスト商品です。',
+            'image' => $image,
         ];
 
         $response = $this->post('/products', $data);
@@ -183,11 +229,15 @@ class ProductTest extends TestCase
     //category_id_exists
     public function test_category_id_must_exist()
     {
+        $image = UploadedFile::fake()->image('test.jpg');
+
         $data = [
             'name' => 'テスト商品',
             'price' => 3000,
             'stock' => '10',
             'category_id' => 999999,
+            'description' => 'これはテスト商品です。',
+            'image' => $image,
         ];
 
         $response = $this->post('/products', $data);
@@ -207,6 +257,8 @@ class ProductTest extends TestCase
             'price' => 3000,
             'stock' => 50,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         Product::create([
@@ -214,6 +266,8 @@ class ProductTest extends TestCase
             'price' => 3500,
             'stock' => 30,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         Product::create([
@@ -221,6 +275,8 @@ class ProductTest extends TestCase
             'price' => 6000,
             'stock' => 20,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $response = $this->get('/products?search=Tシャツ');
@@ -246,6 +302,7 @@ class ProductTest extends TestCase
             'price' => 3000,
             'stock' => 10,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
             'image' => $image,
         ];
 
@@ -259,6 +316,7 @@ class ProductTest extends TestCase
             'price' => 3000,
             'stock' => 10,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
         ]);
 
         $product = Product::first();
@@ -277,6 +335,8 @@ class ProductTest extends TestCase
             'price' => 3500,
             'stock' => 50,
             'category_id' => $category1->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $productB = Product::create([
@@ -284,6 +344,8 @@ class ProductTest extends TestCase
             'price' => 2500,
             'stock' => 30,
             'category_id' => $category2->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $response = $this->get('/products?category_id=' . $category1->id);
@@ -302,6 +364,8 @@ class ProductTest extends TestCase
             'price' => 3500,
             'stock' => 50,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $productB = Product::create([
@@ -309,6 +373,8 @@ class ProductTest extends TestCase
             'price' => 2500,
             'stock' => 30,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $productC = Product::create([
@@ -316,6 +382,8 @@ class ProductTest extends TestCase
             'price' => 6000,
             'stock' => 20,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $response = $this->get('/products?sort=price_asc');
@@ -337,6 +405,8 @@ class ProductTest extends TestCase
             'price' => 3500,
             'stock' => 50,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $productB = Product::create([
@@ -344,6 +414,8 @@ class ProductTest extends TestCase
             'price' => 2500,
             'stock' => 30,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $productC = Product::create([
@@ -351,6 +423,8 @@ class ProductTest extends TestCase
             'price' => 6000,
             'stock' => 20,
             'category_id' => $category->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $response = $this->get('/products?sort=price_desc');
@@ -373,6 +447,8 @@ class ProductTest extends TestCase
             'price' => 3500,
             'stock' => 50,
             'category_id' => $category1->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $productB = Product::create([
@@ -380,6 +456,8 @@ class ProductTest extends TestCase
             'price' => 2500,
             'stock' => 30,
             'category_id' => $category1->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $productC = Product::create([
@@ -387,6 +465,8 @@ class ProductTest extends TestCase
             'price' => 6000,
             'stock' => 20,
             'category_id' => $category2->id,
+            'description' => 'これはテスト商品です。',
+            'image_path' => 'products/test.jpg',
         ]);
 
         $response = $this->get('/products?category_id=' . $category1->id .'&sort=price_asc');
