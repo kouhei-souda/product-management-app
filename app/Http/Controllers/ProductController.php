@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
@@ -58,7 +60,7 @@ class ProductController extends Controller
             }
         }
 
-        //ページネーション＆ページ移動後検索維持
+        //ページネーション＆ページ移動後検索条件維持
         $products = $query->paginate(12)->withQueryString();
 
         //プルダウン表示のため全件取得
@@ -86,17 +88,11 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'max:255'],
-            'price' => ['required', 'integer', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'description' => ['nullable', 'max:1000' ],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-        ]);
+        $validated = $request->validated();
 
+        // 画像がアップロードされてる場合は保存、保存先のパスを登録
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
             $validated['image_path'] = $path;
@@ -131,16 +127,9 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'max:255'],
-            'price' => ['required', 'integer', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'description' => ['nullable', 'max:1000' ],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             //古い画像が存在する場合は削除
@@ -163,7 +152,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //商品が存在する場合
+        //画像が存在する場合はpublicフォルダから削除
         if ($product->image_path) {
             Storage::disk('public')->delete($product->image_path);
         }

@@ -1,3 +1,4 @@
+{{-- バリデーションエラーメッセージ表示 --}}
 @if ($errors->any())
 <div class="alert alert-danger">
 <h5>{{$errors->count()}}件のエラーが発生しました。</h5>
@@ -8,6 +9,7 @@
 </ul>
 </div>
 @endif
+
 <div class="form-group mt-2">
     <label for="name" class="control-label">商品名：</label>
     <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $product->name) }}">
