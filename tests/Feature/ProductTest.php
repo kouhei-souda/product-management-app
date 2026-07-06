@@ -247,6 +247,30 @@ class ProductTest extends TestCase
         $this->assertDatabaseCount('products', 0);
     }
 
+    //description
+    public function test_description_is_required()
+    {
+        $category = Category::factory()->create();
+
+        $image = UploadedFile::fake()->image('test.jpg');
+
+        $data = [
+            'name' => 'テスト商品',
+            'price' => 3000,
+            'stock' => 10,
+            'category_id' => $category->id,
+            'description' => '',
+            'image' => $image,
+        ];
+
+        $response = $this->post('/products', $data);
+
+        $response->assertSessionHasErrors(['description']);
+
+        $this->assertDatabaseCount('products', 0);
+
+    }
+
     //検索
     public function test_product_search()
     {
