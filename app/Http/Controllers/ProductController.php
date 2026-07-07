@@ -36,6 +36,7 @@ class ProductController extends Controller
         }
 
         //ソート処理
+        //並び順が選択せれた時だけソート処理を行う
         if ($request->filled('sort')) {
             switch ($request->sort) {
             //新着順
