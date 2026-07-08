@@ -67,6 +67,6 @@
             @disabled($product->stock === 0)>
             カートに入れる
         </button>
+        <a href="{{ route('products.index') }}" class="btn btn-secondary ms-2">戻る</a>
     </form>
-    <a href="{{ route('products.index') }}" class="btn btn-secondary">一覧に戻る</a>
 </x-layout>

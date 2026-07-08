@@ -1,41 +1,44 @@
 <x-layout title="商品一覧" heading="ECサイト">
 
-    {{-- 検索機能 --}}
-    <form method="GET" action="">
-        <div class="d-flex align-items-center mt-3">
-            <label class="me-2">商品名</label>
-            <input type="text" name="search" class="form-control me-2" value="{{ request('search') }}" style="width: 250px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        {{-- 検索機能 --}}
+        <form method="GET" action="">
+            <div class="d-flex align-items-center mt-3">
+                <label class="me-2">商品名</label>
+                <input type="text" name="search" class="form-control me-2" value="{{ request('search') }}" style="width: 250px;">
 
-            {{-- カテゴリー別 --}}
-            <select name="category_id" id="category_id" class="form-select me-2" style="width: 150px;">
-                {{-- デフォルト --}}
-                <option value="">すべて</option>
+                {{-- カテゴリー別 --}}
+                <select name="category_id" id="category_id" class="form-select me-2" style="width: 150px;">
+                    {{-- デフォルト --}}
+                    <option value="">すべて</option>
 
-                @foreach ($categories as $category)
-                <option
-                    value="{{ $category->id }}"
-                    @selected(request('category_id') == $category->id)
-                >
-                    {{ $category->name }}
-                </option>
-                @endforeach
-            </select>
+                    @foreach ($categories as $category)
+                    <option
+                        value="{{ $category->id }}"
+                        @selected(request('category_id') == $category->id)
+                    >
+                        {{ $category->name }}
+                    </option>
+                    @endforeach
+                </select>
 
-            {{-- ソート順 --}}
-            <select name="sort" id="sort" class="form-select me-2" style="width: 150px;">
-                {{-- デフォルト --}}
-                <option value="">並び順を選択</option>
+                {{-- ソート順 --}}
+                <select name="sort" id="sort" class="form-select me-2" style="width: 150px;">
+                    {{-- デフォルト --}}
+                    <option value="">並び順を選択</option>
 
-                <option value="newest" @selected(request('sort') == 'newest')>新着順</option>
-                <option value="price_asc" @selected(request('sort') == 'price_asc')>価格が安い順</option>
-                <option value="price_desc" @selected(request('sort') == 'price_desc')>価格が高い順</option>
-                <option value="name_asc" @selected(request('sort') == 'name_asc')>商品名順</option>
-            </select>
+                    <option value="newest" @selected(request('sort') == 'newest')>新着順</option>
+                    <option value="price_asc" @selected(request('sort') == 'price_asc')>価格が安い順</option>
+                    <option value="price_desc" @selected(request('sort') == 'price_desc')>価格が高い順</option>
+                    <option value="name_asc" @selected(request('sort') == 'name_asc')>商品名順</option>
+                </select>
 
-            <button type="submit" class="btn btn-secondary me-2">検索</button>
-            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">クリア</a>
-        </div>
-    </form>
+                <button type="submit" class="btn btn-secondary me-2">検索</button>
+                <a href="{{ route('products.index') }}" class="btn btn-secondary">クリア</a>
+            </div>
+        </form>
+        <a href="{{ route('cart.index') }}" class="btn btn-outline-primary">カート</a>
+    </div>
 
     {{-- カード化レイアウト --}}
     <div class="row mt-4">

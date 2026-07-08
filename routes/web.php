@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,7 +14,6 @@ Route::get('/', function () {
 //ユーザー
 Route::resource('products', ProductController::class)
     ->only(['index', 'show']);
-Route::get('/cart', [CartController::class, 'store'])->name('cart.store');
 
 //管理者
 Route::middleware(['auth', 'admin'])
@@ -30,6 +30,12 @@ Route::middleware(['auth', 'admin'])
 });
 
 Route::middleware('auth')->group(function () {
+
+    //カート
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::patch('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{product}', [CartController::class, 'destroy'])->name('cart.destroy');
 
     //プロフィール
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
