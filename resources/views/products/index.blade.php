@@ -1,7 +1,4 @@
-<x-layout title="商品一覧" heading="商品管理システム">
-    <x-slot:header>
-        <a href="{{ route('admin.products.create') }}" class="btn btn-primary">＋商品を追加</a>
-    </x-slot:header>
+<x-layout title="商品一覧" heading="ECサイト">
 
     {{-- 検索機能 --}}
     <form method="GET" action="">
@@ -44,37 +41,29 @@
     <div class="row mt-4">
         @forelse ($products as $product)
         <div class="col-6 col-md-3 mb-4">
-            <div class="card h-100 shadow-sm">
-                <img
-                src="{{ asset('storage/' . $product->image_path) }}"
-                class="card-img-top p-3"
-                style="height:250px; object-fit:contain;"
-                alt="{{ $product->name }}">
+            <a href="{{ route('products.show', $product) }}" class="text-decoration-none text-dark">
+                <div class="card h-100 shadow-sm">
+                    <img
+                    src="{{ asset('storage/' . $product->image_path) }}"
+                    class="card-img-top p-3"
+                    style="height:250px; object-fit:contain;"
+                    alt="{{ $product->name }}">
 
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ $product->name }}</h5>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ $product->name }}</h5>
 
-                    <p class="card-text mb-1">
-                        <strong>価格：</strong>
-                        {{ number_format($product->price) }}円
-                    </p>
+                        <p class="card-text mb-1">
+                            <strong>価格：</strong>
+                            {{ number_format($product->price) }}円
+                        </p>
 
-                    <p class="card-text mb-1">
-                        <strong>在庫：</strong>
-                        {{ $product->stock }}個
-                    </p>
-
-                    <p class="card-text mb-3">
-                        <strong>カテゴリー：</strong>
-                        {{ $product->category->name }}
-                    </p>
-
-                    <div class="mt-auto">
-                        <a href="{{ route('admin.products.show', $product) }}" class="btn btn-outline-primary btn-sm">詳細</a>
-                        <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-outline-warning btn-sm">編集</a>
+                        <p class="card-text mb-3">
+                            <strong>カテゴリー：</strong>
+                            {{ $product->category->name }}
+                        </p>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         @empty
         <div class="col-12">

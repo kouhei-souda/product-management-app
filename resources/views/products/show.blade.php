@@ -1,6 +1,6 @@
 <x-layout title="商品詳細">
     @if ($product->image_path)
-    <div class="mb-4 text-center">
+    <div class="mb-4">
         <img
         src="{{ asset('storage/' .$product->image_path) }}"
         alt="{{ $product->name }}"
@@ -23,10 +23,16 @@
             ¥{{ number_format(($product->price)) }}
         </dd>
         <dt class="col-sm-2">
-            在庫
+            在庫状況
         </dt>
         <dd class="col-sm-10">
-            {{ $product->stock }}
+            @if ($product->stock > 5)
+                在庫あり
+            @elseif ($product->stock > 0)
+                残りわずか
+            @else
+                <span class="text-danger">在庫切れ</span>
+            @endif
         </dd>
         <dt class="col-sm-2">
             カテゴリー名
@@ -41,10 +47,26 @@
             {{ $product->description }}
         </dd>
     </dl>
-    <form method="POST" action="{{ route('admin.products.destroy', $product) }}">
+    <form action="{{ route('cart.store') }}" method="POST" class="mt-4">
         @csrf
-        @method('DELETE')
-        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">一覧に戻る</a>
-        <button type="submit" class="btn btn-danger" onclick="return confirm('削除しますか？')">削除</button>
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+        <div class="mb-3" style="max-width: 120px;">
+            <label class="form-label">数量</label>
+            <input
+                type="number"
+                name="quantity"
+                value="1"
+                min="1"
+                max="{{ $product->stock }}"
+                class="form-control">
+        </div>
+        <button
+            type="submit"
+            class="btn btn-primary"
+            @disabled($product->stock === 0)>
+            カートに入れる
+        </button>
     </form>
+    <a href="{{ route('products.index') }}" class="btn btn-secondary">一覧に戻る</a>
 </x-layout>
