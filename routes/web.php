@@ -2,18 +2,20 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//ユーザー
+Route::resource('products', ProductController::class)
+    ->only(['index', 'show']);
+Route::get('/cart', [CartController::class, 'store'])->name('cart.store');
 
+//管理者
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
@@ -24,7 +26,7 @@ Route::middleware(['auth', 'admin'])
             ->name('dashboard');
 
         //商品管理
-        Route::resource('products', ProductController::class);
+        Route::resource('products', AdminProductController::class);
 });
 
 Route::middleware('auth')->group(function () {
