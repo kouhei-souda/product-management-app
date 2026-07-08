@@ -41,10 +41,10 @@
             {{ $product->description }}
         </dd>
     </dl>
-    <form method="POST" action="{{ route('products.destroy', $product) }}">
+    <form method="POST" action="{{ route('admin.products.destroy', $product) }}">
         @csrf
         @method('DELETE')
-        <a href="{{ route('products.index') }}" class="btn btn-secondary">一覧に戻る</a>
+        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">一覧に戻る</a>
         <button type="submit" class="btn btn-danger" onclick="return confirm('削除しますか？')">削除</button>
     </form>
 </x-layout>

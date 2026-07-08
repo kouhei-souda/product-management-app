@@ -1,6 +1,6 @@
 <x-layout title="商品一覧" heading="商品管理システム">
     <x-slot:header>
-        <a href="{{ route('products.create') }}" class="btn btn-primary">＋商品を追加</a>
+        <a href="{{ route('admin.products.create') }}" class="btn btn-primary">＋商品を追加</a>
     </x-slot:header>
 
     {{-- 検索機能 --}}
@@ -36,7 +36,7 @@
             </select>
 
             <button type="submit" class="btn btn-secondary me-2">検索</button>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">クリア</a>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">クリア</a>
         </div>
     </form>
 
@@ -70,8 +70,8 @@
                     </p>
 
                     <div class="mt-auto">
-                        <a href="{{ route('products.show', $product) }}" class="btn btn-outline-primary btn-sm">詳細</a>
-                        <a href="{{ route('products.edit', $product) }}" class="btn btn-outline-warning btn-sm">編集</a>
+                        <a href="{{ route('admin.products.show', $product) }}" class="btn btn-outline-primary btn-sm">詳細</a>
+                        <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-outline-warning btn-sm">編集</a>
                     </div>
                 </div>
             </div>
