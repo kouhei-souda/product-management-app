@@ -7,10 +7,9 @@ use App\Models\Product;
 
 class CartController extends Controller
 {
-    //一覧
+    //カート内一覧
     public function index()
     {
-
         $cart = session()->get('cart', []);
         $productIds = array_keys($cart);
 
@@ -28,7 +27,7 @@ class CartController extends Controller
         ]);
     }
 
-    //カート追加
+    //カートへ商品を追加
     public function store(Request $request)
     {
         $request->validate([
@@ -52,6 +51,21 @@ class CartController extends Controller
         }
 
         //セッションへ保存
+        session()->put('cart', $cart);
+
+        return redirect()->route('cart.index');
+    }
+
+    //カート内の商品を削除
+    public function destroy(Product $product)
+    {
+        // セッションから現在のカートを取得
+        $cart = session()->get('cart', []);
+
+        // セッションから該当する配列（id）を削除
+        unset($cart[$product->id]);
+
+        // セッションへ保存
         session()->put('cart', $cart);
 
         return redirect()->route('cart.index');
