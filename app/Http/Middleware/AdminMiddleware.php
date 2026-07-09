@@ -15,6 +15,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // 現在ログインしているユーザーが管理者でなければ、403を返して処理を終了
         if (!auth()->user()->is_admin) {
             abort(403);
         }

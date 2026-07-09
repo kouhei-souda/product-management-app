@@ -24,11 +24,18 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // 入力されたメールアドレスとパスワードが正しいか確認
         $request->authenticate();
 
+        // セッションIDを新しく作り直す
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.dashboard', absolute: false));
+        // 今ログインしているユーザーを取得
+        if (auth()->user()->is_admin) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('products.index');
     }
 
     /**
