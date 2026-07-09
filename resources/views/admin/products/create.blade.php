@@ -3,7 +3,7 @@
         <div class="col-md-4">
         <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
             @csrf
-            @include('products.form')
+            @include('admin.products.form')
             <div class="form-group mt-2">
                 <label for="image" class="control-label">商品画像：</label>
                 <input type="file" id="image" name="image" class="form-control" accept="image/*">

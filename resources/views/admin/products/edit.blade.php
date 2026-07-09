@@ -4,7 +4,7 @@
         <form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
-            @include('products.form')
+            @include('admin.products.form')
             @if ($product->image_path)
             <label class="form-label">現在の画像</label>
             <img
