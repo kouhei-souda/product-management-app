@@ -10,11 +10,16 @@ class CartController extends Controller
     //カート内一覧
     public function index()
     {
+        // セッションから現在のカートを取得
         $cart = session()->get('cart', []);
+
+        // カートから商品IDを取得
         $productIds = array_keys($cart);
 
+        // 商品IDに値する商品データを取得
         $products = Product::whereIn('id', $productIds)->get();
 
+        // カート内の合計金額を計算
         $total = 0;
         foreach($products as $product) {
             $total += $product->price * $cart[$product->id]['quantity'];
@@ -44,7 +49,7 @@ class CartController extends Controller
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity'] += $request->quantity;
         } else {
-            //新しく追加
+            //カートになければ新しく追加
             $cart[$productId] = [
                 'quantity' => $request->quantity,
             ];
