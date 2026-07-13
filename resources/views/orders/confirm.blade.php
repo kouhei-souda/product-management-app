@@ -1,8 +1,8 @@
-<x-layout title="カート">
+<x-layout title="注文確認">
     <table class="table align-middle">
         <thead>
             <tr>
-                <th></th><th>商品</th><th>価格</th><th>数量</th><th>小計</th><th></th>
+                <th></th><th>商品</th><th>価格</th><th>数量</th><th>小計</th>
             </tr>
         </thead>
         <tbody>
@@ -19,17 +19,10 @@
                 <td>{{ number_format($product->price) }}円</td>
                 <td>{{ $cart[$product->id]['quantity']}}</td>
                 <td>{{ number_format($product->price * $cart[$product->id]['quantity']) }}円</td>
-                <td>
-                    <form action="{{ route('cart.destroy', $product) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm" onclick="return confirm('削除しますか？')">削除</button>
-                    </form>
-                </td>
             </tr>
             @empty
             <tr>
-                <td colspan="6" class="text-danger fw-bold">
+                <td colspan="5" class="text-danger fw-bold">
                     カートに商品がありません
                 </td>
             </tr>
@@ -37,11 +30,14 @@
         </tbody>
     </table>
     <div class="d-flex justify-content-between align-items-center mt-3">
-        <a href="{{ route('products.index') }}" class="btn btn-secondary">商品一覧へ戻る</a>
+        <a href="{{ route('cart.index') }}" class="btn btn-secondary">カートへ戻る</a>
         <div>
             <h4 class="mb-3">合計金額：{{ number_format($total) }}円</h4>
 
-            <a href="{{ route('orders.confirm') }}" class="btn btn-success">注文確認へ</a>
+            <form action="{{ route('orders.store') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-success">注文確定</button>
+            </form>
         </div>
     </div>
 </x-layout>
