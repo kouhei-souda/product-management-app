@@ -16,7 +16,18 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0">{{ $heading ?? $title }}</h1>
 
-            {{ $header ?? '' }}
+            <div class="d-flex gap-2 align-items-center">
+                {{ $header ?? '' }}
+
+                @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-secondary">
+                            ログアウト
+                        </button>
+                    </form>
+                @endauth
+            </div>
         </div>
     {{ $slot }}
     </div>
