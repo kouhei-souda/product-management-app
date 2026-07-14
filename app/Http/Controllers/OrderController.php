@@ -64,6 +64,13 @@ class OrderController extends Controller
         // 商品IDに値する商品データを取得
         $products = Product::whereIn('id', $productIds)->get();
 
+        // 在庫チェック
+        foreach ($products as $product) {
+            if ($product->stock < $cart[$product->id]['quantity']) {
+                return to_route('cart.index')->with('error', "{$product->name} の在庫が不足してます。");
+            }
+        }
+
         // カート内の合計金額を計算
         $totalPrice = 0;
         foreach($products as $product) {
@@ -86,6 +93,12 @@ class OrderController extends Controller
                     'quantity' => $cart[$product->id]['quantity'],
                     'price' => $product->price,
                 ]);
+            }
+
+            // productsテーブルからstock（在庫）を減らす
+            foreach ($products as $product) {
+                $product->stock -= $cart[$product->id]['quantity'];
+                $product->save();
             }
         });
 
@@ -111,6 +124,4 @@ class OrderController extends Controller
             'orderItems' => $orderItems,
         ]);
     }
-
-
 }

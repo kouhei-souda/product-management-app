@@ -1,4 +1,10 @@
 <x-layout title="カート">
+    {{-- エラーメッセージ表示 --}}
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <table class="table align-middle">
         <thead>
             <tr>

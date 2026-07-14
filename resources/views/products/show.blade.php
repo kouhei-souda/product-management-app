@@ -58,7 +58,6 @@
                 name="quantity"
                 value="1"
                 min="1"
-                max="{{ $product->stock }}"
                 class="form-control">
         </div>
         <button
