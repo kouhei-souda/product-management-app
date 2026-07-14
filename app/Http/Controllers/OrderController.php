@@ -101,9 +101,15 @@ class OrderController extends Controller
         return view('orders.complete');
     }
 
+    // 注文詳細
     public function show(Order $order)
     {
-        //
+        $orderItems = $order->orderItems()->with('product')->get();
+
+        return view('orders.show', [
+            'order' => $order,
+            'orderItems' => $orderItems,
+        ]);
     }
 
 

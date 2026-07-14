@@ -11,7 +11,7 @@
                 <td>{{ $order->id }}</td>
                 <td>{{ $order->created_at }}</td>
                 <td>{{ number_format($order->total_price) }}円</td>
-                <td><a href="#" class="btn btn-secondary">詳細</a></td>
+                <td><a href="{{ route('orders.show', $order) }}" class="btn btn-secondary">詳細</a></td>
             </tr>
             @empty
             <tr>

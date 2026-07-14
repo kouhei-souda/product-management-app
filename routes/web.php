@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/complete', [OrderController::class, 'complete'])->name('orders.complete');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/show', [OrderController::class, 'show'])->name('order.show');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
     //プロフィール
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
