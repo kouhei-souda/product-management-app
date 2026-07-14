@@ -1,4 +1,4 @@
-<x-layout title="商品一覧" heading="ECサイト">
+<x-layout title="Laravel EC">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         {{-- 検索機能 --}}
@@ -37,7 +37,6 @@
                 <a href="{{ route('products.index') }}" class="btn btn-secondary">クリア</a>
             </div>
         </form>
-        <a href="{{ route('cart.index') }}" class="btn btn-outline-primary">カート</a>
     </div>
 
     {{-- カード化レイアウト --}}
