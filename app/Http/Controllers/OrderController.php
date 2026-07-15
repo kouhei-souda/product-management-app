@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
+use App\Services\OrderService;
 
 class OrderController extends Controller
 {
+    // DI（依存性注入）でOrderServiceを受け取る
+    private OrderService $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
+
     // 購入履歴
     public function index()
     {
@@ -58,49 +65,12 @@ class OrderController extends Controller
             return to_route('cart.index')->with('error', 'カートが空です。');
         }
 
-        // カートから商品IDを取得
-        $productIds = array_keys($cart);
-
-        // 商品IDに値する商品データを取得
-        $products = Product::whereIn('id', $productIds)->get();
-
-        // 在庫チェック
-        foreach ($products as $product) {
-            if ($product->stock < $cart[$product->id]['quantity']) {
-                return to_route('cart.index')->with('error', "{$product->name} の在庫が不足してます。");
-            }
+        // Serviceクラスで注文処理を実行
+        try {
+            $this->orderService->placeOrder($userId, $cart);
+        } catch (\Exception $e) {
+            return to_route('cart.index')->with('error', $e->getMessage());
         }
-
-        // カート内の合計金額を計算
-        $totalPrice = 0;
-        foreach($products as $product) {
-            $totalPrice += $product->price * $cart[$product->id]['quantity'];
-        }
-
-        DB::transaction(function () use ($userId, $totalPrice, $products, $cart) {
-
-            // ordersテーブルへ保存
-            $order = Order::create([
-                'user_id' => $userId,
-                'total_price' => $totalPrice,
-            ]);
-
-            // order_itemsテーブルへ保存
-            foreach ($products as $product) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $product->id,
-                    'quantity' => $cart[$product->id]['quantity'],
-                    'price' => $product->price,
-                ]);
-            }
-
-            // productsテーブルからstock（在庫）を減らす
-            foreach ($products as $product) {
-                $product->stock -= $cart[$product->id]['quantity'];
-                $product->save();
-            }
-        });
 
         // カートの中身を削除
         session()->forget('cart');
@@ -124,4 +94,5 @@ class OrderController extends Controller
             'orderItems' => $orderItems,
         ]);
     }
+
 }
