@@ -1,4 +1,10 @@
 <x-layout title="カート">
+    {{-- 成功メッセージ表示 --}}
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     {{-- エラーメッセージ表示 --}}
     @if (session('error'))
         <div class="alert alert-danger">
@@ -23,7 +29,23 @@
                 </td>
                 <td>{{ $product->name }}</td>
                 <td>{{ number_format($product->price) }}円</td>
-                <td>{{ $cart[$product->id]['quantity']}}</td>
+                <td>
+                    <form action="{{ route('cart.update', $product) }}" method="POST">
+                        @csrf
+                        @method('PATCH')
+                        <div class="d-flex align-items-center gap-2">
+                            <input
+                                type="number"
+                                name="quantity"
+                                class="form-control"
+                                style="width: 80px;"
+                                value="{{ old('quantity', $cart[$product->id]['quantity']) }}"
+                                min="1"
+                                >
+                            <button type="submit" class="btn btn-secondary btn-sm">更新</button>
+                        </div>
+                    </form>
+                </td>
                 <td>{{ number_format($product->price * $cart[$product->id]['quantity']) }}円</td>
                 <td>
                     <form action="{{ route('cart.destroy', $product) }}" method="POST">

@@ -61,6 +61,26 @@ class CartController extends Controller
         return redirect()->route('cart.index');
     }
 
+    // カート内更新
+    public function update(Request $request, Product $product)
+    {
+        $request->validate([
+            'quantity' => ['required', 'integer', 'min:1'],
+        ]);
+
+        //セッションから現在のカートを取得
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$product->id])) {
+            $cart[$product->id]['quantity'] = $request->quantity;
+        }
+
+        // セッションへ保存
+        session()->put('cart', $cart);
+
+        return to_route('cart.index')->with('success', 'カートを更新しました。');
+    }
+
     //カート内の商品を削除
     public function destroy(Product $product)
     {
