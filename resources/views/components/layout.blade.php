@@ -15,16 +15,21 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4">
         <div class="container">
 
-            {{-- 管理者とユーザーでルートを分ける --}}
-            @if (auth()->user()->is_admin)
-            <a class="navbar-brand" href="{{ route('admin.products.index') }}">
-                Laravel EC
-            </a>
+            @auth
+                @if (auth()->user()->is_admin)
+                <a class="navbar-brand" href="{{ route('admin.products.index') }}">
+                    Laravel EC
+                </a>
+                @else
+                <a class="navbar-brand" href="{{ route('products.index') }}">
+                    Laravel EC
+                </a>
+                @endif
             @else
-            <a class="navbar-brand" href="{{ route('products.index') }}">
-                Laravel EC
-            </a>
-            @endif
+                <a class="navbar-brand" href="{{ route('products.index') }}">
+                    Laravel EC
+                </a>
+            @endauth
 
             <button class="navbar-toggler"
                     type="button"
