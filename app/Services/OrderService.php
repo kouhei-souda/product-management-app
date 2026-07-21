@@ -20,7 +20,7 @@ class OrderService
         // 在庫チェック
         foreach ($products as $product) {
             if ($product->stock < $cart[$product->id]['quantity']) {
-                throw new \Exception("($product->name)の在庫が不足しています。");
+                throw new \Exception("「{$product->name}」の在庫が不足しています。");
             }
         }
 

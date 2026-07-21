@@ -87,6 +87,10 @@ class OrderController extends Controller
     // 注文詳細
     public function show(Order $order)
     {
+        if ($order->user_id !== auth()->id()) {
+            abort(403);
+        }
+        
         $orderItems = $order->orderItems()->with('product')->get();
 
         return view('orders.show', [
