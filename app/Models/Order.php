@@ -13,6 +13,14 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'name',
+        'email',
+        'phone',
+        'postal_code',
+        'prefecture',
+        'city',
+        'address',
+        'building',
         'total_price',
     ];
 }

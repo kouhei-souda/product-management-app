@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\OrderService;
@@ -29,8 +30,15 @@ class OrderController extends Controller
     // 購入確認
     public function confirm()
     {
+        $user = auth()->user();
+
         // セッションから現在のカートを取得
         $cart = session()->get('cart', []);
+
+        // カートが空の場合はリダイレクト
+        if (empty($cart)) {
+            return to_route('cart.index')->with('error', 'カートに商品がありません。商品を追加してください。');
+        }
 
         // カートから商品IDを取得
         $productIds = array_keys($cart);
@@ -45,6 +53,7 @@ class OrderController extends Controller
         }
 
         return view('orders.confirm', [
+            'user' => $user,
             'products' => $products,
             'cart' => $cart,
             'total' => $total,
@@ -90,7 +99,7 @@ class OrderController extends Controller
         if ($order->user_id !== auth()->id()) {
             abort(403);
         }
-        
+
         $orderItems = $order->orderItems()->with('product')->get();
 
         return view('orders.show', [

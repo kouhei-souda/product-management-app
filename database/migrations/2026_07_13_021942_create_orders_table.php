@@ -14,6 +14,15 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('postal_code');
+            $table->string('prefecture');
+            $table->string('city');
+            $table->string('address'); // 丁目・番地
+            $table->string('building')->nullable();
             $table->unsignedInteger('total_price');
             $table->timestamps();
         });
