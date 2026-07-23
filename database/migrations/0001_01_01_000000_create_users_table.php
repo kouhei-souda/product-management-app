@@ -15,6 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone');
+            $table->string('postal_code');
+            $table->string('prefecture');
+            $table->string('city');
+            $table->string('address'); // 丁目・番地
+            $table->string('building')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

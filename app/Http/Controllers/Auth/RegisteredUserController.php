@@ -33,12 +33,24 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'phone' => ['required', 'string', 'regex:/^[0-9-]+$/', 'max:20'],
+            'postal_code' => ['required', 'string', 'max:8'],
+            'prefecture' => ['required', 'string', 'max:50'],
+            'city' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
+            'building' => ['nullable', 'string', 'max:255'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
+            'postal_code' => $request->postal_code,
+            'prefecture' => $request->prefecture,
+            'city' => $request->city,
+            'address' => $request->address,
+            'building' => $request->building,
             'password' => Hash::make($request->password),
         ]);
 
@@ -46,6 +58,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('products.index');
     }
 }
