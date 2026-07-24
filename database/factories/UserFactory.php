@@ -30,6 +30,22 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+
+            'phone' => fake()->numerify('090########'),
+            'postal_code' => fake()->numerify('###-####'),
+            'prefecture' => fake()->randomElement([
+                '北海道',
+                '東京都',
+                '神奈川県',
+                '大阪府',
+                '京都府',
+                '愛知県',
+                '福岡県',
+                '沖縄県',
+            ]),
+            'city' => fake()->city(),
+            'address' => fake()->streetAddress(),
+            'building' => fake()->optional()->secondaryAddress(),
         ];
     }
 

@@ -194,6 +194,14 @@ class OrderTest extends TestCase
     {
         $order = Order::create([
             'user_id' => $this->user->id,
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'phone' => $this->user->phone,
+            'postal_code' => $this->user->postal_code,
+            'prefecture' => $this->user->prefecture,
+            'city' => $this->user->city,
+            'address' => $this->user->address,
+            'building' => $this->user->building,
             'total_price' => 3000,
         ]);
 
@@ -219,6 +227,14 @@ class OrderTest extends TestCase
     {
         $order = Order::create([
             'user_id' => $this->user->id,
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'phone' => $this->user->phone,
+            'postal_code' => $this->user->postal_code,
+            'prefecture' => $this->user->prefecture,
+            'city' => $this->user->city,
+            'address' => $this->user->address,
+            'building' => $this->user->building,
             'total_price' => 3000,
         ]);
 
@@ -245,6 +261,14 @@ class OrderTest extends TestCase
 
         $order = Order::create([
             'user_id' => $otherUser->id,
+            'name' => $otherUser->name,
+            'email' => $otherUser->email,
+            'phone' => $otherUser->phone,
+            'postal_code' => $otherUser->postal_code,
+            'prefecture' => $otherUser->prefecture,
+            'city' => $otherUser->city,
+            'address' => $otherUser->address,
+            'building' => $otherUser->building,
             'total_price' => 3000,
         ]);
 
